@@ -1,0 +1,21 @@
+.docs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temp/scratch files
+temp.*
+
+# Logs
+*.log
+
+# Node (if ever added)
+node_modules/
+npm-debug.log*
