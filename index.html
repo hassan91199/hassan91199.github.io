@@ -38,6 +38,9 @@
     }
   </script>
 
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
   <!-- Personal CSS -->
   <link rel="stylesheet" href="css/styles.css">
 
@@ -48,14 +51,14 @@
 <body>
   <div class="bg-purple-dark w-full">
     <!-- navbar -->
-    <nav class="flex flex-wrap items-center justify-between py-[5%] px-[10%]">
+    <nav x-data="{ open: false }" class="flex flex-wrap items-center justify-between py-[5%] px-[10%]">
       <a href="#" class="font-heading text-pink text-2xl">Hassan</a>
-      <button class="lg:hidden bg-transparent border-0 p-0" type="button" onclick="toggleNav()">
+      <button class="lg:hidden bg-transparent border-0 p-0" type="button" @click="open = !open">
         <svg class="h-8 w-8 text-pink" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
         </svg>
       </button>
-      <div id="nav-collapse" class="hidden lg:flex w-full lg:w-auto">
+      <div class="w-full lg:w-auto lg:flex" :class="open ? 'flex' : 'hidden'">
         <ul class="flex flex-col lg:flex-row lg:ml-auto">
           <li>
             <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#about-section">About</a>
@@ -125,11 +128,12 @@
             <img src="images/projects/simon.png" class="w-full" alt="Simon Project Image Here">
             <div class="bg-card-bg p-4">
               <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">Simon Game</h5>
-              <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light simon-text">The site creates a series
-                of tones<span class="dots">...</span><span class="more" style="display:none"> and button presses and requires a user to repeat
-                  the sequence. If the user succeeds, the series becomes
-                  progressively longer and more complex. Once the user fails,
-                  the game is over.</span><button onclick="expand('simon-text')" class="more-btn bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body">Read More</button></p>
+              <p x-data="{ expanded: false }" class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
+                The site creates a series of tones
+                <span x-show="!expanded">...</span>
+                <span x-show="expanded"> and button presses and requires a user to repeat the sequence. If the user succeeds, the series becomes progressively longer and more complex. Once the user fails, the game is over.</span>
+                <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body"></button>
+              </p>
               <a href="https://hassan91199.github.io/simon-game/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
             </div>
           </div>
@@ -138,7 +142,7 @@
         <div class="w-full md:w-1/2 py-8 relative">
           <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
             <img src="images/projects/drum-kit.png" class="w-full" alt="Drum kit Project Image Here">
-            <div id="drumkit-card-body" class="bg-card-bg p-4">
+            <div class="bg-card-bg p-4">
               <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">Drum Kit</h5>
               <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">Collection of different
                 drums to play with.</p>
@@ -150,11 +154,14 @@
         <div class="w-full md:w-1/2 py-8 relative">
           <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
             <img src="images/projects/dicee.png" class="w-full" alt="Dicee Project Image Here">
-            <div id="dice-card-body" class="bg-card-bg p-4">
+            <div class="bg-card-bg p-4">
               <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">Dice</h5>
-              <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light dice-text">A fun web page that rolls
-                the<span class="dots">...</span><span class="more" style="display:none"> dice and
-                  resolves the disputes (if any) among people :)</span><button onclick="expand('dice-text')" class="more-btn bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body">Read More</button></p>
+              <p x-data="{ expanded: false }" class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
+                A fun web page that rolls the
+                <span x-show="!expanded">...</span>
+                <span x-show="expanded"> dice and resolves the disputes (if any) among people :)</span>
+                <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body"></button>
+              </p>
               <a href="https://hassan91199.github.io/dice/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
             </div>
           </div>
@@ -163,13 +170,14 @@
         <div class="w-full md:w-1/2 py-8 relative">
           <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
             <img src="images/projects/tindog.png" class="w-full" alt="TinDog Project Image Here">
-            <div id="tindog-card-body" class="bg-card-bg p-4">
+            <div class="bg-card-bg p-4">
               <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">TinDog</h5>
-              <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light tindog-text">TinDog is a conceptual web
-                page<span class="dots">...</span><span class="more" style="display:none"> to find a new partner for your dog. This page also
-                  showcases important sections that are used in typical
-                  startup pages like the features, testimonials, pricing, and
-                  call for action sections.</span><button onclick="expand('tindog-text')" class="more-btn bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body">Read More</button></p>
+              <p x-data="{ expanded: false }" class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
+                TinDog is a conceptual web page
+                <span x-show="!expanded">...</span>
+                <span x-show="expanded"> to find a new partner for your dog. This page also showcases important sections that are used in typical startup pages like the features, testimonials, pricing, and call for action sections.</span>
+                <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body"></button>
+              </p>
               <a href="https://hassan91199.github.io/tindog/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
             </div>
           </div>
@@ -182,13 +190,13 @@
   <!-- call for action/contact section -->
   <section id="contact-section">
     <div class="bg-purple-dark w-full">
-      <div class="w-full p-8 text-center">
+      <div x-data="{ showForm: false, sent: false }" class="w-full p-8 text-center">
         <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink py-8">It will be a pleasure to work with you!</h1>
 
-        <a href="#contact-form" id="contact-btn" class="block mx-auto sm:w-10/12 md:w-1/2 border border-pink text-pink rounded-full text-lg py-2 px-4 hover:bg-pink hover:text-pink-light font-body text-center" onclick="showContactForm()">Come have a talk</a>
+        <a href="#contact-form" x-show="!showForm" @click.prevent="showForm = true" class="block mx-auto sm:w-10/12 md:w-1/2 border border-pink text-pink rounded-full text-lg py-2 px-4 hover:bg-pink hover:text-pink-light font-body text-center cursor-pointer">Come have a talk</a>
 
         <div class="w-full sm:w-10/12 md:w-2/3 lg:w-1/2 mx-auto">
-          <form id="contact-form" class="hidden" action="index.html" method="post">
+          <form id="contact-form" x-show="showForm" class="flex flex-col" action="index.html" method="post">
 
             <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="first-name">First Name</label>
             <input id="first-name" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-12 mb-7 font-body text-pink text-[1.1rem] w-full" type="text" name="fName">
@@ -202,9 +210,9 @@
             <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="message">Message</label>
             <textarea id="message" name="name" rows="8" cols="10" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-60 mb-7 font-body text-pink text-[1.1rem] w-full"></textarea>
 
-            <button class="bg-pink border-pink text-purple-dark h-12 px-6 rounded font-body cursor-pointer" type="button" name="button" onclick="showThankYou()">Send</button>
+            <button class="bg-pink border-pink text-purple-dark h-12 px-6 rounded font-body cursor-pointer" type="button" @click="sent = true">Send</button>
 
-            <span class="thank-you invisible font-body text-pink text-[1.1rem] block mt-2">Thank you for showing interest. Will get back to you as soon as possible.</span>
+            <span x-show="sent" class="font-body text-pink text-[1.1rem] block mt-2">Thank you for showing interest. Will get back to you as soon as possible.</span>
 
           </form>
         </div>
@@ -219,7 +227,6 @@
     </div>
   </section>
 
-  <script src="index.js"></script>
 </body>
 
 </html>
