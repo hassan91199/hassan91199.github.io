@@ -271,29 +271,60 @@
   <!-- contact section -->
   <section id="contact-section">
     <div class="bg-purple-dark w-full">
-      <div x-data="{ showForm: false, sent: false }" class="w-full p-8 text-center">
+      <div x-data="{
+        showForm: false,
+        loading: false,
+        success: false,
+        error: false,
+        async submit(event) {
+          this.loading = true;
+          this.success = false;
+          this.error = false;
+          const form = event.target;
+          const data = new FormData(form);
+          try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+              method: 'POST',
+              body: data
+            });
+            const json = await res.json();
+            if (json.success) {
+              this.success = true;
+              form.reset();
+            } else {
+              this.error = true;
+            }
+          } catch (e) {
+            this.error = true;
+          }
+          this.loading = false;
+        }
+      }" class="w-full p-8 text-center">
         <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink py-8">It will be a pleasure to work with you!</h1>
 
         <a href="#contact-form" x-show="!showForm" @click.prevent="showForm = true" class="block mx-auto sm:w-10/12 md:w-1/2 border border-pink text-pink rounded-full text-lg py-2 px-4 hover:bg-pink hover:text-purple-dark font-body text-center cursor-pointer">Come have a talk</a>
 
         <div class="w-full sm:w-10/12 md:w-2/3 lg:w-1/2 mx-auto">
-          <form id="contact-form" x-show="showForm" class="flex flex-col" action="index.html" method="post">
+          <form id="contact-form" x-show="showForm" class="flex flex-col" @submit.prevent="submit($event)">
 
-            <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="first-name">First Name</label>
-            <input id="first-name" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-12 mb-7 font-body text-pink text-[1.1rem] w-full" type="text" name="fName">
+            <input type="hidden" name="access_key" value="6cf1c87a-6ba3-4d98-b0d1-85128043c0c8">
 
-            <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="last-name">Last Name</label>
-            <input id="last-name" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-12 mb-7 font-body text-pink text-[1.1rem] w-full" type="text" name="lName">
+            <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="name">Name</label>
+            <input id="name" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-12 mb-7 font-body text-pink text-[1.1rem] w-full" type="text" name="name" required>
 
             <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="email">Email</label>
-            <input id="email" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-12 mb-7 font-body text-pink text-[1.1rem] w-full" type="text" name="eMail">
+            <input id="email" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-12 mb-7 font-body text-pink text-[1.1rem] w-full" type="email" name="email" required>
 
             <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="message">Message</label>
-            <textarea id="message" name="name" rows="8" cols="10" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-60 mb-7 font-body text-pink text-[1.1rem] w-full"></textarea>
+            <textarea id="message" name="message" rows="8" cols="10" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-60 mb-7 font-body text-pink text-[1.1rem] w-full" required></textarea>
 
-            <button class="bg-pink border-pink text-purple-dark h-12 px-6 rounded font-body cursor-pointer font-semibold" type="button" @click="sent = true">Send</button>
+            <button class="bg-pink border-pink text-purple-dark h-12 px-6 rounded font-body cursor-pointer font-semibold disabled:opacity-50" type="submit" :disabled="loading">
+              <span x-show="!loading">Send</span>
+              <span x-show="loading">Sending...</span>
+            </button>
 
-            <span x-show="sent" class="font-body text-pink text-[1.1rem] block mt-2">Thank you for showing interest. Will get back to you as soon as possible.</span>
+            <span x-show="success" class="font-body text-pink text-[1.1rem] block mt-4">Thank you! Your message has been sent.</span>
+            <span x-show="error" class="font-body text-red-400 text-[1.1rem] block mt-4">Something went wrong. Please try again.</span>
 
           </form>
         </div>
