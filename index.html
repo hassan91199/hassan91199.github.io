@@ -59,7 +59,7 @@
         </svg>
       </button>
       <div class="w-full lg:w-auto lg:flex" :class="open ? 'flex' : 'hidden'">
-        <ul class="flex flex-col lg:flex-row lg:ml-auto">
+        <ul class="flex flex-col lg:flex-row lg:ml-auto lg:items-center">
           <li>
             <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#about-section">About</a>
           </li>
@@ -67,25 +67,34 @@
             <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#skill-section">Skills</a>
           </li>
           <li>
+            <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#experience-section">Experience</a>
+          </li>
+          <li>
             <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#project-section">Projects</a>
           </li>
           <li>
-            <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#contact-section">Contact Me</a>
+            <a class="font-body text-lg text-pink hover:text-pink-hover px-3 py-2 block" href="#contact-section">Contact</a>
+          </li>
+          <li class="lg:ml-2">
+            <a class="font-body text-sm bg-pink text-purple-dark hover:bg-pink-hover font-semibold px-4 py-2 rounded block text-center" href="resume.pdf" download>Resume</a>
           </li>
         </ul>
       </div>
     </nav>
 
-    <!-- about section -->
+    <!-- about / hero section -->
     <section id="about-section">
       <div class="pb-[10%] pl-[10%] pr-[50%] max-[600px]:pr-[10%]">
-        <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink">Hi! I'm</h1>
-        <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink">Hassan</h1>
-        <h1 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink">front end developer...</h1>
-        <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink">and Computer Science student at
-          the <a class="no-underline text-pink hover:text-pink-hover" href="https://vu.edu.pk/" target="_blank">Virtual University of Pakistan</a>.
-          I'm fond of coding and always craving to build awesome-looking and
-          responsive web pages.</p>
+        <p class="font-body text-pink-light text-[1.1rem] sm:text-[1.21rem] mb-2">Hi, I'm</p>
+        <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink leading-tight">Hassan Abbas</h1>
+        <h2 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink mb-4">Full-Stack Developer</h2>
+        <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
+          Building end-to-end web applications using Python (FastAPI) and React.js. Specialized in scalable architectures, AI integrations, and production-ready solutions — from backend APIs and databases to dynamic, responsive frontends.
+        </p>
+        <div class="flex flex-wrap gap-4 mt-6">
+          <a href="resume.pdf" download class="font-body bg-pink text-purple-dark px-6 py-2 rounded hover:bg-pink-hover font-semibold">Download Resume</a>
+          <a href="#contact-section" class="font-body border border-pink text-pink px-6 py-2 rounded hover:bg-pink hover:text-purple-dark">Contact Me</a>
+        </div>
       </div>
     </section>
   </div>
@@ -93,25 +102,107 @@
 
   <!-- skill section -->
   <section id="skill-section">
-    <div class="bg-pink-light w-full">
-      <div class="grid grid-cols-2 md:grid-cols-3 container mx-auto py-[5%]">
+    <div class="bg-pink-light w-full py-[6%] px-[10%]">
+      <h2 class="font-heading text-[2rem] sm:text-[2.2rem] text-purple-dark mb-10 text-center">Skills</h2>
+      <div class="max-w-4xl mx-auto space-y-6">
+
         <div>
-          <img class="w-1/2 h-auto block mx-auto my-5" src="images/skill_icons/html-5.png" alt="HTML icon">
+          <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">Languages</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Python</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">JavaScript</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">TypeScript</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">PHP</span>
+          </div>
         </div>
+
         <div>
-          <img class="w-1/2 h-auto block mx-auto my-5" src="images/skill_icons/css-3.png" alt="CSS icon">
+          <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">Frontend</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">React.js</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Next.js</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Tailwind CSS</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Alpine.js</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Inertia.js</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">HTML5 & CSS3</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Bootstrap</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">jQuery</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">AJAX</span>
+          </div>
         </div>
+
         <div>
-          <img class="w-1/2 h-auto block mx-auto my-5" src="images/skill_icons/java-script.png" alt="JavaScript icon">
+          <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">Backend & Databases</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">FastAPI</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Laravel</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Node.js</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Express.js</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">RESTful APIs</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">GraphQL</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Apollo Server</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">MySQL</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">MongoDB</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">MariaDB</span>
+          </div>
         </div>
+
         <div>
-          <img class="w-1/2 h-auto block mx-auto my-5" src="images/skill_icons/bootstrap.png" alt="Bootstrap icon">
+          <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">Cloud & DevOps</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">AWS EC2</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">AWS SES</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">GCP</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Docker</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Git & GitHub</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Automated Deployments</span>
+          </div>
         </div>
+
         <div>
-          <img class="w-1/2 h-auto block mx-auto my-5" src="images/skill_icons/jquery.jpg" alt="jQuery icon">
+          <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">AI & Tools</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">OpenAI GPT-4.5</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Whisper & TTS</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">ElevenLabs</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Flux Schnell</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">FFmpeg</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Stripe</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Twilio</span>
+          </div>
         </div>
+
         <div>
-          <img class="w-1/2 h-auto block mx-auto my-5" src="images/skill_icons/linux.png" alt="Linux icon">
+          <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">Real-Time</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">WebSockets</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Pusher</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Firebase Cloud Messaging</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Laravel Echo</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- experience section -->
+  <section id="experience-section">
+    <div class="bg-purple-dark w-full py-[6%] px-[10%]">
+      <h2 class="font-heading text-[2rem] sm:text-[2.2rem] text-pink mb-10 text-center">Experience</h2>
+      <div class="max-w-4xl mx-auto">
+        <div class="border-l-4 border-pink pl-6 pb-2">
+          <div class="flex flex-wrap justify-between items-start mb-1">
+            <h3 class="font-heading text-[1.4rem] text-pink">Software Engineer</h3>
+            <span class="font-body text-pink-light text-sm mt-1">Aug 2023 – Present</span>
+          </div>
+          <p class="font-body text-pink font-semibold mb-4">Softpers — Lahore, Pakistan</p>
+          <ul class="space-y-2 list-disc list-inside">
+            <li class="font-body text-pink-light text-[1rem]">Built full-stack features using GraphQL, Apollo Server, Node.js, React.js, MongoDB, AWS, PHP, and Laravel across multiple production projects.</li>
+            <li class="font-body text-pink-light text-[1rem]">Delivered across diverse domains: public WiFi startup, short-video social media platform, and in-house HR information system.</li>
+            <li class="font-body text-pink-light text-[1rem]">Engineered AI-powered video generation pipelines, real-time collaboration systems, and enterprise-grade admin dashboards.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -120,66 +211,56 @@
 
   <!-- project section -->
   <section id="project-section">
-    <div class="bg-purple-mid w-full">
-      <div class="flex flex-wrap mx-auto">
+    <div class="bg-purple-mid w-full py-[6%] px-[10%]">
+      <h2 class="font-heading text-[2rem] sm:text-[2.2rem] text-pink-light mb-10 text-center">Projects</h2>
+      <div class="flex flex-wrap max-w-5xl mx-auto gap-8 justify-center">
 
-        <div class="w-full md:w-1/2 py-8 relative">
-          <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
-            <img src="images/projects/simon.png" class="w-full" alt="Simon Project Image Here">
-            <div class="bg-card-bg p-4">
-              <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">Simon Game</h5>
-              <p x-data="{ expanded: false }" class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
-                The site creates a series of tones
-                <span x-show="!expanded">...</span>
-                <span x-show="expanded"> and button presses and requires a user to repeat the sequence. If the user succeeds, the series becomes progressively longer and more complex. Once the user fails, the game is over.</span>
-                <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body"></button>
-              </p>
-              <a href="https://hassan91199.github.io/simon-game/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
+        <div class="w-full md:w-[calc(50%-1rem)] bg-card-bg rounded overflow-hidden flex flex-col">
+          <div class="w-full h-40 bg-gradient-to-br from-purple-dark to-card-bg flex flex-col items-center justify-center px-4">
+            <h3 class="font-heading text-[1.8rem] text-pink">CloakMotion</h3>
+            <p class="font-body text-pink-light text-sm text-center mt-1">AI-Powered Video Generation Platform</p>
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Python</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">FastAPI</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">React</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Laravel</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">OpenAI</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">ElevenLabs</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">FFmpeg</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">AWS</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Stripe</span>
             </div>
+            <p x-data="{ expanded: false }" class="font-body text-[1rem] text-pink-light">
+              Automated AI-based faceless video generation platform that publishes directly to YouTube and TikTok.
+              <span x-show="!expanded"> ...</span>
+              <span x-show="expanded"> Engineered the core video pipeline with OpenAI (GPT-4.5, Whisper, TTS), ElevenLabs, and Flux Schnell. Built Stripe subscription billing, Laravel queues for async processing, and deployed on AWS EC2 with automated deployments and AWS SES.</span>
+              <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body text-sm"></button>
+            </p>
           </div>
         </div>
 
-        <div class="w-full md:w-1/2 py-8 relative">
-          <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
-            <img src="images/projects/drum-kit.png" class="w-full" alt="Drum kit Project Image Here">
-            <div class="bg-card-bg p-4">
-              <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">Drum Kit</h5>
-              <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">Collection of different
-                drums to play with.</p>
-              <a href="https://hassan91199.github.io/drum-kit/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
-            </div>
+        <div class="w-full md:w-[calc(50%-1rem)] bg-card-bg rounded overflow-hidden flex flex-col">
+          <div class="w-full h-40 bg-gradient-to-br from-purple-dark to-card-bg flex flex-col items-center justify-center px-4">
+            <h3 class="font-heading text-[1.5rem] text-pink text-center">Home Energy Audit Software</h3>
+            <p class="font-body text-pink-light text-sm text-center mt-1">Enterprise Full-Stack Platform</p>
           </div>
-        </div>
-
-        <div class="w-full md:w-1/2 py-8 relative">
-          <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
-            <img src="images/projects/dicee.png" class="w-full" alt="Dicee Project Image Here">
-            <div class="bg-card-bg p-4">
-              <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">Dice</h5>
-              <p x-data="{ expanded: false }" class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
-                A fun web page that rolls the
-                <span x-show="!expanded">...</span>
-                <span x-show="expanded"> dice and resolves the disputes (if any) among people :)</span>
-                <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body"></button>
-              </p>
-              <a href="https://hassan91199.github.io/dice/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">PHP</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Laravel</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">React</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Pusher</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Stripe</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">RESTful API</span>
             </div>
-          </div>
-        </div>
-
-        <div class="w-full md:w-1/2 py-8 relative">
-          <div class="w-[85%] max-[600px]:w-full mx-auto bg-transparent">
-            <img src="images/projects/tindog.png" class="w-full" alt="TinDog Project Image Here">
-            <div class="bg-card-bg p-4">
-              <h5 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink-light">TinDog</h5>
-              <p x-data="{ expanded: false }" class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
-                TinDog is a conceptual web page
-                <span x-show="!expanded">...</span>
-                <span x-show="expanded"> to find a new partner for your dog. This page also showcases important sections that are used in typical startup pages like the features, testimonials, pricing, and call for action sections.</span>
-                <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body"></button>
-              </p>
-              <a href="https://hassan91199.github.io/tindog/" class="block mx-auto border border-pink text-pink rounded px-4 py-2 hover:bg-pink hover:text-pink-light font-body text-[1.1rem] text-center" target="_blank">Take a look</a>
-            </div>
+            <p x-data="{ expanded: false }" class="font-body text-[1rem] text-pink-light">
+              Full-stack platform for a U.S.-based energy audit company with real-time collaboration and subscription billing.
+              <span x-show="!expanded"> ...</span>
+              <span x-show="expanded"> Built real-time data sync using Pusher, led development of a licensing platform with Stripe, and developed an admin dashboard with advanced user management, reporting, and analytics to support data-driven decisions.</span>
+              <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body text-sm"></button>
+            </p>
           </div>
         </div>
 
@@ -187,13 +268,13 @@
     </div>
   </section>
 
-  <!-- call for action/contact section -->
+  <!-- contact section -->
   <section id="contact-section">
     <div class="bg-purple-dark w-full">
       <div x-data="{ showForm: false, sent: false }" class="w-full p-8 text-center">
         <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink py-8">It will be a pleasure to work with you!</h1>
 
-        <a href="#contact-form" x-show="!showForm" @click.prevent="showForm = true" class="block mx-auto sm:w-10/12 md:w-1/2 border border-pink text-pink rounded-full text-lg py-2 px-4 hover:bg-pink hover:text-pink-light font-body text-center cursor-pointer">Come have a talk</a>
+        <a href="#contact-form" x-show="!showForm" @click.prevent="showForm = true" class="block mx-auto sm:w-10/12 md:w-1/2 border border-pink text-pink rounded-full text-lg py-2 px-4 hover:bg-pink hover:text-purple-dark font-body text-center cursor-pointer">Come have a talk</a>
 
         <div class="w-full sm:w-10/12 md:w-2/3 lg:w-1/2 mx-auto">
           <form id="contact-form" x-show="showForm" class="flex flex-col" action="index.html" method="post">
@@ -210,7 +291,7 @@
             <label class="font-body text-[1.1rem] text-pink text-left mb-1 block" for="message">Message</label>
             <textarea id="message" name="name" rows="8" cols="10" class="bg-transparent outline outline-1 outline-pink rounded-[10px] p-[10px] h-60 mb-7 font-body text-pink text-[1.1rem] w-full"></textarea>
 
-            <button class="bg-pink border-pink text-purple-dark h-12 px-6 rounded font-body cursor-pointer" type="button" @click="sent = true">Send</button>
+            <button class="bg-pink border-pink text-purple-dark h-12 px-6 rounded font-body cursor-pointer font-semibold" type="button" @click="sent = true">Send</button>
 
             <span x-show="sent" class="font-body text-pink text-[1.1rem] block mt-2">Thank you for showing interest. Will get back to you as soon as possible.</span>
 
