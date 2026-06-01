@@ -87,9 +87,9 @@
       <div class="pb-[10%] pl-[10%] pr-[50%] max-[600px]:pr-[10%]">
         <p class="font-body text-pink-light text-[1.1rem] sm:text-[1.21rem] mb-2">Hi, I'm</p>
         <h1 class="font-heading text-[3rem] sm:text-[3.3rem] text-pink leading-tight">Hassan Abbas</h1>
-        <h2 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink mb-4">Full-Stack & AI Integration Engineer | SaaS Architect</h2>
+        <h2 class="font-heading text-[1.5rem] sm:text-[1.65rem] text-pink mb-4">Full-Stack AI Engineer | SaaS Architect</h2>
         <p class="font-body text-[1.1rem] sm:text-[1.21rem] text-pink-light">
-          Architecting production-ready SaaS applications and scalable media pipelines. I build end-to-end systems that integrate AI as a force multiplier, leveraging a core stack of Laravel, React, and Python to deliver high-value, revenue-generating products.
+          Architecting production-ready SaaS applications and scalable media pipelines. I build end-to-end systems that integrate AI as a force multiplier, leveraging a core stack of React, Python, and Laravel to deliver high-value, revenue-generating products.
         </p>
         <div class="flex flex-wrap gap-4 mt-6">
           <a href="resume.pdf" download class="font-body bg-pink text-purple-dark px-6 py-2 rounded hover:bg-pink-hover font-semibold">Download Resume</a>
@@ -109,6 +109,9 @@
         <div>
           <h3 class="font-body font-bold text-purple-mid mb-3 text-sm uppercase tracking-widest">AI & Media Engineering</h3>
           <div class="flex flex-wrap gap-2">
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">RAG (Retrieval-Augmented Generation)</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Vector Databases (Pinecone/pgvector)</span>
+            <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Semantic Search</span>
             <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">OpenAI (GPT-4.5)</span>
             <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">Whisper & TTS</span>
             <span class="font-body text-sm bg-purple-dark text-pink-light px-3 py-1 rounded-full">ElevenLabs</span>
@@ -221,6 +224,29 @@
               Architected and built an automated AI-driven faceless video generation platform from scratch, handling the entire stack from media processing to subscription management.
               <span x-show="!expanded"> ...</span>
               <span x-show="expanded"><br><br>• Engineered a high-performance video engine in Python (FastAPI), orchestrating multimodal AI workflows (OpenAI GPT-4.5, Whisper, ElevenLabs) to generate content dynamically.<br>• Developed a distributed processing system using Laravel Queues and Python workers for heavy FFmpeg rendering tasks.<br>• Implemented multi-tenant SaaS architecture with Stripe integration and direct publishing to TikTok/YouTube.</span>
+              <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body text-sm"></button>
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full md:w-[calc(50%-1rem)] bg-card-bg rounded overflow-hidden flex flex-col">
+          <div class="w-full h-40 bg-gradient-to-br from-purple-dark to-card-bg flex flex-col items-center justify-center px-4">
+            <h3 class="font-heading text-[1.8rem] text-pink">AI Knowledge Base</h3>
+            <p class="font-body text-pink-light text-sm text-center mt-1">RAG System with Long-Term Memory</p>
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Python</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">FastAPI</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">Pinecone</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">OpenAI</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">React</span>
+              <span class="text-xs font-body bg-purple-dark text-pink px-2 py-1 rounded">TypeScript</span>
+            </div>
+            <p x-data="{ expanded: false }" class="font-body text-[1rem] text-pink-light">
+              Developed a retrieval-augmented generation (RAG) system with long-term memory, enabling context-aware interactions with large document sets.
+              <span x-show="!expanded"> ...</span>
+              <span x-show="expanded"><br><br>• Optimized search latency to &lt;500ms by implementing efficient vector embeddings and semantic search using Pinecone and pgvector.<br>• Built a responsive React frontend for real-time chat and document management, ensuring seamless user interaction with the AI core.<br>• Engineered a robust document processing pipeline in Python for automated ingestion and chunking.</span>
               <button @click="expanded = !expanded" x-text="expanded ? 'Read less' : 'Read more'" class="bg-transparent border-0 text-gray-400 inline p-0 ml-1 cursor-pointer font-body text-sm"></button>
             </p>
           </div>
