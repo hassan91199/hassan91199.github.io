@@ -6,7 +6,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
 </head><body class="bg-purple-dark text-pink-light font-body">
-<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Blog</a></nav>
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><span class="font-heading text-pink text-2xl">Hassan</span><a href="./" class="text-pink">Blog</a></nav>
 <main class="max-w-3xl mx-auto px-6 pb-20"><p><span class="inline-block text-xs font-semibold uppercase tracking-wide bg-purple-mid text-pink px-2 py-1 rounded mb-3">Lessons learned</span></p><h1 class="font-heading text-4xl text-pink mb-8">Three Terraform failures that only a real AWS account shows</h1>
 <p class="mb-5 leading-7">ClipForge&#x27;s infrastructure is a single Terraform setup: an EC2 instance for the API, a frontend on S3 and CloudFront, DNS records, and a storage bucket. GitHub Actions brings it up on demand and tears it down afterwards. I tested the Terraform in two ways that run without an AWS account: <code class="bg-purple-mid px-1 rounded text-pink">terraform validate</code>, and a LocalStack gate that applies it against a fake AWS locally.</p>
 <p class="mb-5 leading-7">Neither can know the facts of a real account, and the first applies against mine failed three separate times for exactly that reason.</p>
