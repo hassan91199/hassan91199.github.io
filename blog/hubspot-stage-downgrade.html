@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>HubSpot silently ignored my lead updates, and only the real sandbox showed it</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="FunnelTrace scores each lead hot, warm or cold and, when a person approves the follow-up, writes the contact to HubSpot with a lifecycle stage that...">
+<link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
+</head><body class="bg-purple-dark text-pink-light font-body">
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Blog</a></nav>
+<main class="max-w-3xl mx-auto px-6 pb-20"><p><span class="inline-block text-xs font-semibold uppercase tracking-wide bg-purple-mid text-pink px-2 py-1 rounded mb-3">Case study</span></p><h1 class="font-heading text-4xl text-pink mb-8">HubSpot silently ignored my lead updates, and only the real sandbox showed it</h1>
+<p class="mb-5 leading-7">FunnelTrace scores each lead hot, warm or cold and, when a person approves the follow-up, writes the contact to HubSpot with a lifecycle stage that matches the score. Hot becomes <code class="bg-purple-mid px-1 rounded text-pink">salesqualifiedlead</code>, warm becomes <code class="bg-purple-mid px-1 rounded text-pink">marketingqualifiedlead</code>, cold becomes <code class="bg-purple-mid px-1 rounded text-pink">lead</code>.</p>
+<p class="mb-5 leading-7">My automated tests passed. Then I ran the project&#x27;s final check against a real HubSpot sandbox account, and it found two things that no test with a fake HubSpot could have found.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">Problem 1: moving a lead backwards did nothing</h2>
+<p class="mb-5 leading-7">A lead who writes again is re-scored. For example, a lead starts hot, then sends a message that makes them cold. My code sent HubSpot an update setting the stage back to <code class="bg-purple-mid px-1 rounded text-pink">lead</code>. HubSpot ignored it and left the stage where it was. It doesn&#x27;t apply a direct move to an earlier lifecycle stage.</p>
+<p class="mb-5 leading-7">The fix was to be explicit about the order and handle each case:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>STAGE_ORDER = [&quot;lead&quot;, &quot;marketingqualifiedlead&quot;, &quot;salesqualifiedlead&quot;]
+
+current_stage = current[&quot;properties&quot;].get(&quot;lifecyclestage&quot;)
+if current_stage and current_stage not in STAGE_ORDER:
+    # Opportunity, customer, ...: further along than anything we assign. Leave it.
+    del properties[&quot;lifecyclestage&quot;]
+elif current_stage and STAGE_ORDER.index(current_stage) &gt; STAGE_ORDER.index(new_stage):
+    # Clearing first is the only way HubSpot accepts a move back.
+    self._request(&quot;PATCH&quot;, path, {&quot;properties&quot;: {&quot;lifecyclestage&quot;: &quot;&quot;}})
+self._request(&quot;PATCH&quot;, path, {&quot;properties&quot;: properties})</code></pre>
+<p class="mb-5 leading-7">The code now reads the contact&#x27;s current stage first. If the contact is already an opportunity or a customer, it leaves the stage alone, because a lead-scoring tool shouldn&#x27;t pull a paying customer back to &quot;lead&quot;. If the move is backwards, it clears the stage first, which is the only way HubSpot accepts it.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">Problem 2: the phone lookup missed new contacts</h2>
+<p class="mb-5 leading-7">To avoid creating a duplicate contact, the code searches HubSpot for the lead&#x27;s email and phone before creating one. The phone search used an exact match, and a contact created moments earlier wasn&#x27;t found yet because HubSpot&#x27;s search index lags behind its writes. The code could then create a second contact for the same person.</p>
+<p class="mb-5 leading-7">I changed the phone search to match on a token instead of an exact value, which finds the contact sooner and tolerates formatting differences.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What the two had in common</h2>
+<p class="mb-5 leading-7">Both bugs are the API behaving differently from what my mocks assumed. A mock returns whatever you told it to, so my tests proved only that my code did what I expected. The real service showed what it actually does. I added tests for both cases afterwards, so they stay fixed.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What this doesn&#x27;t cover</h2>
+<ul class="list-disc pl-6 mb-5 leading-7"><li class='mb-2'>The indexing lag can still duplicate a phone-only contact that was created seconds earlier, or created outside the app. The token search reduces it and doesn&#x27;t remove it.</li><li class='mb-2'>A mistyped email blocks the whole HubSpot write, and there&#x27;s no retry for a failed sync yet.</li><li class='mb-2'>This is a free-tier sandbox with fake leads, not a client&#x27;s CRM.</li></ul>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What I&#x27;d tell a client</h2>
+<p class="mb-5 leading-7">If your workflow writes to a CRM, plan one run against the real service, with real account settings, before you call it done. The failures that cost you are the silent ones, where the API says success and nothing changes. That is a short test to run, and it&#x27;s the one that finds them.</p>
+<p class="mb-5 leading-7">If a CRM integration has been quietly doing less than you think, book a call with me on Upwork.</p>
+<p class="mt-12"><a class="text-pink underline" href="./">All posts</a></p></main></body></html>

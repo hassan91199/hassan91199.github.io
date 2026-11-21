@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><title>The progress bar that kept freezing: moving an API off AWS App Runner</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="ClipForge turns a prompt into a captioned vertical video. A run takes a couple of minutes, so the web app shows live progress for each stage: script, voice">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="ClipForge turns a prompt into a captioned vertical video. A run takes a couple of minutes, so the web app shows live progress for each stage: script,...">
 <link rel="icon" href="../favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
 </head><body class="bg-purple-dark text-pink-light font-body">
-<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Case studies</a></nav>
-<main class="max-w-3xl mx-auto px-6 pb-20"><h1 class="font-heading text-4xl text-pink mb-8">The progress bar that kept freezing: moving an API off AWS App Runner</h1>
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Blog</a></nav>
+<main class="max-w-3xl mx-auto px-6 pb-20"><p><span class="inline-block text-xs font-semibold uppercase tracking-wide bg-purple-mid text-pink px-2 py-1 rounded mb-3">Case study</span></p><h1 class="font-heading text-4xl text-pink mb-8">The progress bar that kept freezing: moving an API off AWS App Runner</h1>
 <p class="mb-5 leading-7">ClipForge turns a prompt into a captioned vertical video. A run takes a couple of minutes, so the web app shows live progress for each stage: script, voiceover, images, render. That progress travels over Server-Sent Events (SSE), one long-lived HTTP connection that the server keeps writing to.</p>
 <h2 class="font-heading text-2xl text-pink mt-10 mb-4">The symptom</h2>
 <p class="mb-5 leading-7">During the render stage the progress stream would die. Render is a long ffmpeg chain that reports only twice, when it starts and when it finishes, so the connection sits silent for minutes. The API was running on AWS App Runner, and App Runner&#x27;s managed proxy sits between the browser and the app.</p>
@@ -33,4 +33,4 @@ while True:
 <h2 class="font-heading text-2xl text-pink mt-10 mb-4">What this doesn&#x27;t cover</h2>
 <p class="mb-5 leading-7">ClipForge isn&#x27;t running publicly. It&#x27;s shown through a recorded 88-second run and screenshots, and the Terraform setup is built to deploy on demand rather than staying live. The project has 147 automated tests. The App Runner behaviour is what I observed in this project, not a general claim about the service.</p>
 <p class="mb-5 leading-7">If your app streams progress or long-running results and something between you and the user keeps cutting it, book a call with me on Upwork.</p>
-<p class="mt-12"><a class="text-pink underline" href="./">All case studies</a></p></main></body></html>
+<p class="mt-12"><a class="text-pink underline" href="./">All posts</a></p></main></body></html>

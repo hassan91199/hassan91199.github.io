@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Three Terraform failures that only a real AWS account shows</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="ClipForge&#x27;s infrastructure is a single Terraform setup: an EC2 instance for the API, a frontend on S3 and CloudFront, DNS records, and a storage bucket....">
+<link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
+</head><body class="bg-purple-dark text-pink-light font-body">
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Blog</a></nav>
+<main class="max-w-3xl mx-auto px-6 pb-20"><p><span class="inline-block text-xs font-semibold uppercase tracking-wide bg-purple-mid text-pink px-2 py-1 rounded mb-3">Lessons learned</span></p><h1 class="font-heading text-4xl text-pink mb-8">Three Terraform failures that only a real AWS account shows</h1>
+<p class="mb-5 leading-7">ClipForge&#x27;s infrastructure is a single Terraform setup: an EC2 instance for the API, a frontend on S3 and CloudFront, DNS records, and a storage bucket. GitHub Actions brings it up on demand and tears it down afterwards. I tested the Terraform in two ways that run without an AWS account: <code class="bg-purple-mid px-1 rounded text-pink">terraform validate</code>, and a LocalStack gate that applies it against a fake AWS locally.</p>
+<p class="mb-5 leading-7">Neither can know the facts of a real account, and the first applies against mine failed three separate times for exactly that reason.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The three failures</h2>
+<p class="mb-5 leading-7"><strong>The disk was too small.</strong> The Amazon Linux 2023 image I picked has a snapshot that needs at least 30 GB. I had asked for a 20 GB root volume, and AWS refused. The fix was one number:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>volume_size = 30</code></pre>
+<p class="mb-5 leading-7"><strong>The subnet couldn&#x27;t run the instance.</strong> I let Terraform take the first subnet in the default network. Not every availability zone offers every instance type, and that zone didn&#x27;t offer mine. Now the code asks AWS which zones offer the instance type and picks a subnet from one of those:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>data &quot;aws_ec2_instance_type_offerings&quot; &quot;available&quot; {
+  filter {
+    name   = &quot;instance-type&quot;
+    values = [var.instance_type]
+  }
+  location_type = &quot;availability-zone&quot;
+}</code></pre>
+<p class="mb-5 leading-7"><strong>The server&#x27;s permission didn&#x27;t match its own script.</strong> The instance reads its secrets from AWS Systems Manager when it boots. I had granted <code class="bg-purple-mid px-1 rounded text-pink">ssm:GetParameters</code>, the plural action, but the start-up script calls <code class="bg-purple-mid px-1 rounded text-pink">get-parameter</code>, which needs the singular <code class="bg-purple-mid px-1 rounded text-pink">ssm:GetParameter</code>. The box came up and couldn&#x27;t read its keys. Changing one word in the IAM policy fixed it.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The real fix: shorten the loop</h2>
+<p class="mb-5 leading-7">Each of those failures cost a full GitHub Actions run to see: build the image, push it, apply, wait, read the error. Fixing three of them that way was slow.</p>
+<p class="mb-5 leading-7">So I wrote a script that runs a real <code class="bg-purple-mid px-1 rounded text-pink">terraform plan</code> from my machine against the real account, using the same variables the workflow uses. It never applies anything. A plan is read-only, but it asks AWS the account-specific questions, so problems like a missing IAM action or a disk size surface in seconds instead of after a full pipeline run.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What I&#x27;d tell a client</h2>
+<ul class="list-disc pl-6 mb-5 leading-7"><li class='mb-2'>Local checks and fake clouds catch typos and wrong types. They can&#x27;t know your account&#x27;s limits, regions or permissions. Budget one real, read-only plan before you trust a pipeline.</li><li class='mb-2'>Put that check on your own machine, not only in CI. A feedback loop of seconds changes how you work.</li><li class='mb-2'>Treat infrastructure that goes up and down on demand like a product: the first apply against a real account is a test, not a formality.</li></ul>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What this doesn&#x27;t cover</h2>
+<p class="mb-5 leading-7">ClipForge isn&#x27;t running publicly. The setup is built to deploy and tear down on demand, and it&#x27;s shown through a recorded run. The three failures above are the ones I hit on my account and region, not a list of everything that can go wrong.</p>
+<p class="mb-5 leading-7">If your infrastructure code works locally and breaks in the real account, book a call with me on Upwork.</p>
+<p class="mt-12"><a class="text-pink underline" href="./">All posts</a></p></main></body></html>
