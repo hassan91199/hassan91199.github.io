@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>A free tier that can&#x27;t spend your AI budget</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="CloakMotion turns a prompt into a finished short video, and every video costs real money in API calls: a script from GPT, a voiceover, AI-generated images.">
+<link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
+</head><body class="bg-purple-dark text-pink-light font-body">
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Case studies</a></nav>
+<main class="max-w-3xl mx-auto px-6 pb-20"><h1 class="font-heading text-4xl text-pink mb-8">A free tier that can&#x27;t spend your AI budget</h1>
+<p class="mb-5 leading-7">CloakMotion turns a prompt into a finished short video, and every video costs real money in API calls: a script from GPT, a voiceover, AI-generated images. That makes a free tier dangerous. If free users can render, the bill grows with every sign-up, whether anyone ever pays.</p>
+<p class="mb-5 leading-7">So I made the free plan unable to render at all. It&#x27;s a deliberate product decision, and it keeps free users cost-free to host.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">Who is allowed to spend money</h2>
+<p class="mb-5 leading-7">The rule lives on the server, in one place. A user counts as subscribed only if they hold an active subscription of one of the three paid types:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>public function isSubscribed(): bool
+{
+    return $this-&gt;subscribed(&#x27;starter&#x27;) ||
+        $this-&gt;subscribed(&#x27;daily&#x27;) ||
+        $this-&gt;subscribed(&#x27;hardcore&#x27;);
+}</code></pre>
+<p class="mb-5 leading-7">The paid actions check it. Re-rendering a video, editing images and the AI tools such as the prompt writer all start with the same guard, which returns a 403 with &quot;An active subscription is required&quot;. The ElevenLabs voices are gated by the same rule:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>if (! $request-&gt;user()-&gt;isSubscribed()) {
+    return response()-&gt;json([
+        &#x27;message&#x27; =&gt; &#x27;An active subscription is required to re-render a video.&#x27;,
+    ], 403);
+}</code></pre>
+<p class="mb-5 leading-7">The number of series a user can run comes from the quantity on their subscription, and an unsubscribed user gets zero:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>public function maxSeries(): int
+{
+    return (int) ($this-&gt;activeSubscription()?-&gt;quantity ?? 0);
+}</code></pre>
+<p class="mb-5 leading-7">The scheduler checks it too. When the scheduled job picks up a video, it only dispatches the YouTube and TikTok uploads if the user is still subscribed, so a cancelled account stops publishing at the next run without anyone touching it.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The frontend decides nothing</h2>
+<p class="mb-5 leading-7">The Next.js app shows plans and buttons, but it never grants access. The audit I ran on the payment code confirmed this: the server decides who gets paid access, the frontend can&#x27;t grant it, and no secrets sit in frontend code. A user who edits the page in their browser still hits the same 403.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The paid side</h2>
+<p class="mb-5 leading-7">Billing is Stripe Billing through Laravel Cashier, with three paid tiers: Starter at $19 a month, Daily at $39 and Hardcore at $69, with annual prices seeded as well. The tiers differ in how often videos post: three times a week, once a day, or twice a day. Stripe webhooks are signature-verified, and I wrote up the two payment bugs I found in the audit in a separate post.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What this doesn&#x27;t cover</h2>
+<ul class="list-disc pl-6 mb-5 leading-7"><li class='mb-2'>The free tier isn&#x27;t a trial. Free users can&#x27;t generate videos, and I didn&#x27;t build it as a try-before-you-buy feature.</li><li class='mb-2'>ElevenLabs voices and the second daily posting slot are paid-plan features, not available to everyone.</li><li class='mb-2'>CloakMotion has no automated test suite and isn&#x27;t deployed publicly. It runs locally in Docker and is shown through a recorded walkthrough.</li></ul>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What I&#x27;d tell a client</h2>
+<p class="mb-5 leading-7">If your product spends money per use, decide who may trigger that spend before you build the feature, and enforce it on the server where the cost happens. A hidden button is not a lock. I&#x27;d also put a check on the background jobs, because that&#x27;s where a cancelled account quietly keeps working.</p>
+<p class="mb-5 leading-7">If you&#x27;re adding paid plans to an AI product and want the cost side designed in from the start, book a call with me on Upwork.</p>
+<p class="mt-12"><a class="text-pink underline" href="./">All case studies</a></p></main></body></html>
