@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>The progress bar that kept freezing: moving an API off AWS App Runner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="ClipForge turns a prompt into a captioned vertical video. A run takes a couple of minutes, so the web app shows live progress for each stage: script, voice">
+<link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
+</head><body class="bg-purple-dark text-pink-light font-body">
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Case studies</a></nav>
+<main class="max-w-3xl mx-auto px-6 pb-20"><h1 class="font-heading text-4xl text-pink mb-8">The progress bar that kept freezing: moving an API off AWS App Runner</h1>
+<p class="mb-5 leading-7">ClipForge turns a prompt into a captioned vertical video. A run takes a couple of minutes, so the web app shows live progress for each stage: script, voiceover, images, render. That progress travels over Server-Sent Events (SSE), one long-lived HTTP connection that the server keeps writing to.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The symptom</h2>
+<p class="mb-5 leading-7">During the render stage the progress stream would die. Render is a long ffmpeg chain that reports only twice, when it starts and when it finishes, so the connection sits silent for minutes. The API was running on AWS App Runner, and App Runner&#x27;s managed proxy sits between the browser and the app.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">First attempt: a heartbeat</h2>
+<p class="mb-5 leading-7">Silent connections get cut by proxies, so the obvious fix is to send something every so often. I made the stream send a small heartbeat event every 20 seconds:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>HEARTBEAT_INTERVAL_SECONDS = 20
+
+while True:
+    try:
+        event = events.get(timeout=HEARTBEAT_INTERVAL_SECONDS)
+    except queue.Empty:
+        yield _sse({&quot;event&quot;: &quot;heartbeat&quot;})
+        continue
+    if event is None:
+        return
+    yield _sse(event)</code></pre>
+<p class="mb-5 leading-7">I labelled it a stopgap in the code, and it was. With the heartbeat running, App Runner&#x27;s managed proxy still silently ended the stream during the render stage. The app was doing its part and I couldn&#x27;t change what the proxy did.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The fix: remove the proxy I couldn&#x27;t control</h2>
+<p class="mb-5 leading-7">I moved the API to a plain EC2 instance with Caddy in front of it. Caddy is a reverse proxy I configure myself, and it gets its own TLS certificate directly from Let&#x27;s Encrypt. There is no load balancer or managed proxy left in the request path. That fixed the problem outright, and live progress now runs from the first stage to the finished video.</p>
+<p class="mb-5 leading-7">The instance, the frontend and the DNS records are all in one Terraform setup that GitHub Actions can bring up and tear down on demand.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What I&#x27;d tell a client</h2>
+<ul class="list-disc pl-6 mb-5 leading-7"><li class='mb-2'>When a symptom survives the fix you&#x27;d expect to work, look at what sits between your code and the user. A workaround in your app can&#x27;t fix behaviour in someone else&#x27;s proxy.</li><li class='mb-2'>Long-running jobs with live progress are a poor fit for some managed platforms. It&#x27;s worth testing a multi-minute stream early, before the feature is built around it.</li><li class='mb-2'>I kept App Runner where it fits. A separate Streamlit demo app, which doesn&#x27;t need a long stream, is still set up to run there.</li></ul>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What this doesn&#x27;t cover</h2>
+<p class="mb-5 leading-7">ClipForge isn&#x27;t running publicly. It&#x27;s shown through a recorded 88-second run and screenshots, and the Terraform setup is built to deploy on demand rather than staying live. The project has 147 automated tests. The App Runner behaviour is what I observed in this project, not a general claim about the service.</p>
+<p class="mb-5 leading-7">If your app streams progress or long-running results and something between you and the user keeps cutting it, book a call with me on Upwork.</p>
+<p class="mt-12"><a class="text-pink underline" href="./">All case studies</a></p></main></body></html>

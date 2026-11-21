@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>One person, two channels: merging duplicate leads without merging the wrong people</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="FunnelTrace is a lead-triage workflow I built for a fictional home-services company. Leads arrive from a web form and from a WhatsApp-style webhook. The sa">
+<link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{'purple-dark':'#0F172A','purple-mid':'#1E293B','card-bg':'#263548','pink':'#38BDF8','pink-light':'#E0F2FE'},fontFamily:{heading:['Anton','serif'],body:['Montserrat','sans-serif']}}}}</script>
+</head><body class="bg-purple-dark text-pink-light font-body">
+<nav class="flex justify-between items-center max-w-3xl mx-auto px-6 py-8"><a href="../" class="font-heading text-pink text-2xl">Hassan</a><a href="./" class="text-pink">Case studies</a></nav>
+<main class="max-w-3xl mx-auto px-6 pb-20"><h1 class="font-heading text-4xl text-pink mb-8">One person, two channels: merging duplicate leads without merging the wrong people</h1>
+<p class="mb-5 leading-7">FunnelTrace is a lead-triage workflow I built for a fictional home-services company. Leads arrive from a web form and from a WhatsApp-style webhook. The same person often writes on both: a form on Monday, a message on Tuesday. If the system treats them as two leads, someone gets two follow-ups, and the score for the second message ignores everything the first one said.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The rules</h2>
+<p class="mb-5 leading-7">Every lead is normalized into one shape first, whichever channel it came from. Emails are trimmed and lowercased. Phone numbers are reduced to digits in international form, so <code class="bg-purple-mid px-1 rounded text-pink">+44 7700 900123</code> and <code class="bg-purple-mid px-1 rounded text-pink">0044 7700 900123</code> become the same string.</p>
+<p class="mb-5 leading-7">Then a new lead is compared with the existing ones, in two steps:</p>
+<p class="mb-5 leading-7">1. The email or the phone number must match exactly after normalizing. A matching name alone never creates a merge. 2. The names must also be compatible. &quot;Sarah M&quot; and &quot;Sarah Mitchell&quot; pass. &quot;Dan&quot; and &quot;Daniel&quot; pass. Two different people who share a phone number, such as a couple on one mobile, don&#x27;t merge if their names clearly differ.</p>
+<p class="mb-5 leading-7">The check for step 2 is deliberately loose about typos and short forms and strict about everything else:</p>
+<pre class="bg-purple-mid rounded p-4 mb-5 overflow-x-auto text-sm"><code>def names_compatible(a: str, b: str) -&gt; bool:
+    if not (_has_real_name(a) and _has_real_name(b)):
+        return True   # a WhatsApp lead with no profile name has nothing to contradict
+    ta, tb = _tokens(a), _tokens(b)
+    if not _first_names_match(ta[0], tb[0]):
+        return False
+    if len(ta) &gt; 1 and len(tb) &gt; 1:
+        return _last_names_match(ta[-1], tb[-1])
+    return True</code></pre>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">The reason is saved</h2>
+<p class="mb-5 leading-7">When two leads merge, the system records why, in plain words:</p>
+<p class="mb-5 leading-7">&gt; normalized phone match; name &#x27;Sarah M&#x27; ~ &#x27;Sarah Mitchell&#x27;</p>
+<p class="mb-5 leading-7">That text is stored on the lead and shown in the live trace. If a merge looks wrong, you can see which rule fired instead of guessing. The merged lead keeps the more complete name, is re-scored with the new message, and keeps every earlier score in its history.</p>
+<p class="mb-5 leading-7">A near miss stays separate. A lead with a similar name but a different email and phone is a different lead.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">How I checked it</h2>
+<p class="mb-5 leading-7">I wrote a locked set of 10 leads before writing any scoring code, including a cross-channel pair and a near miss, and ran it through the real app. Dedup was correct on all 10 leads in every one of nine eval runs.</p>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What this doesn&#x27;t cover</h2>
+<ul class="list-disc pl-6 mb-5 leading-7"><li class='mb-2'>Ten leads is a small sample. It shows the rules do what I intended, not that they catch every real-world case.</li><li class='mb-2'>There is no locking. Two leads from the same person arriving at the same instant could race and create two records.</li><li class='mb-2'>Phone numbers without a country code can&#x27;t be resolved. They are compared as the digits given.</li><li class='mb-2'>It matches on email and phone only. It doesn&#x27;t match on name and address, or across more than the two channels I built.</li></ul>
+<h2 class="font-heading text-2xl text-pink mt-10 mb-4">What I&#x27;d tell a client</h2>
+<p class="mb-5 leading-7">Not everything in an AI workflow should be AI. Merging records is a place where you want the same answer every time and a reason you can read, so I used rules there and kept the model for scoring and drafting, where judgment is the point.</p>
+<p class="mb-5 leading-7">If your leads arrive from more than one place and nobody is sure whether &quot;Sarah M&quot; and &quot;Sarah Mitchell&quot; are the same person, book a call with me on Upwork.</p>
+<p class="mt-12"><a class="text-pink underline" href="./">All case studies</a></p></main></body></html>
